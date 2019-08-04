@@ -21,7 +21,7 @@ class Compte
     private $id;
 
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="string")
      */
     private $NumCompte;
 
@@ -50,12 +50,12 @@ class Compte
         return $this->id;
     }
 
-    public function getNumCompte(): ?int
+    public function getNumCompte(): ?string
     {
         return $this->NumCompte;
     }
 
-    public function setNumCompte(int $NumCompte): self
+    public function setNumCompte(string $NumCompte): self
     {
         $this->NumCompte = $NumCompte;
 
