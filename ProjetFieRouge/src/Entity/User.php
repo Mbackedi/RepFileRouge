@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @Vich\Uploadable
@@ -28,6 +29,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="Ce champ ne doit pas etre vide") 
      */
     private $username;
 
@@ -39,16 +41,20 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Veuillez resnseigner ce champ") 
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Ce champ ne doit pas etre vide") 
      */
     private $nomcomplet;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer",  length=20, unique=true)
+     * @Assert\Positive
+     * @Assert\NotBlank(message="Ce champ ne doit pas etre vide") 
      */
     private $telephone;
 
@@ -69,6 +75,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez selectionner une image") 
      *  @var string
      */
     private $imagename;
@@ -78,6 +85,15 @@ class User implements UserInterface
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
      * @Vich\UploadableField(mapping="diop", fileNameProperty="imageName")
+     *@Assert\File(
+     *     maxSize = "5M",
+     *     mimeTypes = {
+     *         "image/jpeg",
+     *         "image/pjpeg",
+     *         "image/png",
+     *     },
+     * mimeTypesMessage = "Veuillez saisir un bon format d\'image"
+     * )
      * 
      * @var File
      */

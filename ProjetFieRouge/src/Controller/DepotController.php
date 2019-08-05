@@ -31,39 +31,37 @@ class DepotController extends AbstractController
     /**
      * @Route("/depot", name="depot_new", methods={"GET","POST"})
      */
-  
-public function new(Request $request,EntityManagerInterface $entityManager ): Response
+
+    public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $depot = new Depot();
-        $form = $this->createForm(DepotType::class,$depot);
-        $data=$request->request->all();
+        $form = $this->createForm(DepotType::class, $depot);
+        $data = $request->request->all();
         $depot->setDatedepot(new \DateTime());
-      //  var_dump( $depot->setDateDepot(new \DateTime())); die;
+        //  var_dump( $depot->setDateDepot(new \DateTime())); die;
         $depot->getMontant();
-       
+
         $form->submit($data);
-        if($form->isSubmitted()){  
-             $depot->getMontant();
-            
-            if ($depot->getMontant()>=75000) {
-                $compte= $depot->getCompte();
-                $compte->setSolde($compte->getSolde()+$depot->getMontant());
+        if ($form->isSubmitted()) {
+            $depot->getMontant();
+
+            if ($depot->getMontant() >= 75000) {
+                $compte = $depot->getCompte();
+                $compte->setSolde($compte->getSolde() + $depot->getMontant());
                 $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($compte);
                 $entityManager->persist($depot);
                 $entityManager->flush();
-            return new Response('Le dépôt a été effectué',Response::HTTP_CREATED);
+                return new Response('Le dépôt a été effectué', Response::HTTP_CREATED);
             }
-            return new Response('Le montant du depot doit etre superieur ou egal a 75 000',Response::HTTP_CREATED);
-         
+            return new Response('Le montant du depot doit etre superieur ou egal a 75 000', Response::HTTP_CREATED);
         }
 
-      $data = [
+        $data = [
             'status' => 500,
             'message' => 'Vous devez renseigner le montant et le compte où doit être effectuer le dépot '
         ];
-        return new Response($data, 500); 
-
+        return new Response($data, 500);
     }
 
 

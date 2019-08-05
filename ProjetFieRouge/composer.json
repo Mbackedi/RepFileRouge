@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "api-platform/api-pack": "^1.2",
+        "doctrine/annotations": "^1.6",
         "doctrine/doctrine-migrations-bundle": "^2.0",
         "friendsofsymfony/rest-bundle": "^2.5",
         "jms/serializer-bundle": "^3.4",

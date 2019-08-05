@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -78,6 +79,7 @@ class UserController extends AbstractController
             $user->setRoles($role);
             $user->setStatut("debloquer");
 
+           
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
@@ -145,8 +147,9 @@ class UserController extends AbstractController
 
     /**
      * @Route("/admin", name="admin_utilisateur_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_SUPER_ADMIN")
      */
-    public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, ValidatorInterface $validator, SerializerInterface $serializer): Response
     {
         $partenaire = new Partenaire();
         $form = $this->createForm(PartenaireType::class, $partenaire);
@@ -163,7 +166,7 @@ class UserController extends AbstractController
         $form = $this->createForm(CompteType::class, $compte);
         $data = $request->request->all();
         $form->submit($data);
-        $compte->setSolde(1);
+        $compte->setSolde(0);
         $num = rand(1000000000, 9999999999);
         $sn = "SN";
         $number = $sn . $num;
@@ -186,7 +189,15 @@ class UserController extends AbstractController
                 $utilisateur,
                 $form->get('plainPassword')->getData()
             )
+
         );
+        $errors = $validator->validate($utilisateur);
+        if (count($errors)) {
+            $errors = $serializer->serialize($errors, 'json');
+            return new Response($errors, 500, [
+                'content_type' => 'application/json'
+            ]);
+        }
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($compte);
         $entityManager->persist($utilisateur);

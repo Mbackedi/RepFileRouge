@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use Symfony\Component\Security\Core\User\UserInterface;
-
-
 use App\Entity\User;
 use App\Entity\Profil;
 use App\Repository\UserRepository;
