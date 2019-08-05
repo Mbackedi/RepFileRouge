@@ -230,7 +230,6 @@ class User implements UserInterface
     public function setImagename(string $imagename): void
     {
         $this->imagename = $imagename;
-
     }
 
 
@@ -270,6 +269,4 @@ class User implements UserInterface
 
         return $this;
     }
-
-
 }

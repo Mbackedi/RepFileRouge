@@ -178,7 +178,7 @@ class UserController extends AbstractController
         $form->submit($data);
         $utilisateur->setImageFile($files);
 
-        $utilisateur->setRoles(["ROLE_ADMINP"]);
+        $utilisateur->setRoles(["ROLE_USER"]);
         $utilisateur->setPartenaire($partenaire);
         $utilisateur->setStatut("debloquer");
         $utilisateur->setPassword(
@@ -191,7 +191,6 @@ class UserController extends AbstractController
         $entityManager->persist($compte);
         $entityManager->persist($utilisateur);
         $entityManager->flush();
-        return new Response('Administrateur  ajouter  avec succès', Response::HTTP_CREATED);
+        return new Response('Admin  ajouté  avec succès', Response::HTTP_CREATED);
     }
-
 }

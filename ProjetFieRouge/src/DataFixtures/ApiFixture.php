@@ -28,8 +28,9 @@ class ApiFixture extends Fixture
         $user->setNomcomplet('Mbodj');
         $user->setTelephone(76129635);
         $user->setImageName("image.jpg");
-        $user->setPartenaire(1);
-        $user->setProfil(1);
+        $user->setPartenaire(null);
+        $user->setProfil(null);
+        $user->setStatut("debloquer");
         $user->setUpdatedAt(new \DateTime('now'));
 
 
