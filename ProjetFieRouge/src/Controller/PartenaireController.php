@@ -27,7 +27,7 @@ class PartenaireController extends AbstractController
     {
         $partenaire = new Partenaire();
         $form = $this->createForm(PartenaireType::class, $partenaire);
-        $data=json_decode($request->getContent(),true);
+        $data = json_decode($request->getContent(), true);
         $form->submit($data);
 
         if ($form->isSubmitted()) {
@@ -35,11 +35,10 @@ class PartenaireController extends AbstractController
             $entityManager->persist($partenaire);
             $entityManager->flush();
 
-            return new Response('Partenaire ajouté',Response::HTTP_CREATED);
+            return new Response('Partenaire ajouté', Response::HTTP_CREATED);
         }
 
         return new Response('Veuillez renseigner les champs ', Response::HTTP_CREATED);
-
     }
 
     /**

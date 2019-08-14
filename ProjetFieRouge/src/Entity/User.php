@@ -75,8 +75,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Veuillez selectionner une image") 
-     *  @var string
+     * 
      */
     private $imagename;
 

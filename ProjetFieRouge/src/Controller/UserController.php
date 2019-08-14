@@ -67,9 +67,9 @@ class UserController extends AbstractController
             $user->setProfil($profils);
 
             $role = [];
-            if ($profils->getLibelle() == "ROLE_SUPER_ADMI") {
+            if ($profils->getLibelle() == "ROLE_SUPER_ADMIN") {
                 $role = (["ROLE_ADMIN"]);
-            } elseif ($profils->getLibelle() == "ROLE_ADMI") {
+            } elseif ($profils->getLibelle() == "ROLE_ADMIN") {
                 $role = (["ROLE_USER"]);
             } elseif ($profils->getLibelle() == "ROLE_USER") {
                 $role = (["ROLE_CAISSIER"]);
@@ -79,7 +79,7 @@ class UserController extends AbstractController
             $user->setRoles($role);
             $user->setStatut("debloquer");
 
-           
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
@@ -181,7 +181,7 @@ class UserController extends AbstractController
         $form->submit($data);
         $utilisateur->setImageFile($files);
 
-        $utilisateur->setRoles(["ROLE_USER"]);
+        $utilisateur->setRoles(["ROLE_CAISSIER"]);
         $utilisateur->setPartenaire($partenaire);
         $utilisateur->setStatut("debloquer");
         $utilisateur->setPassword(
