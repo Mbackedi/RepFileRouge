@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transaction{% endblock %}
+
+{% block body %}
+    <h1>Transaction</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ transaction.id }}</td>
+            </tr>
+            <tr>
+                <th>Caisier</th>
+                <td>{{ transaction.caisier }}</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>{{ transaction.code }}</td>
+            </tr>
+            <tr>
+                <th>Montant</th>
+                <td>{{ transaction.montant }}</td>
+            </tr>
+            <tr>
+                <th>Frais</th>
+                <td>{{ transaction.frais }}</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>{{ transaction.total }}</td>
+            </tr>
+            <tr>
+                <th>Commissionsup</th>
+                <td>{{ transaction.commissionsup }}</td>
+            </tr>
+            <tr>
+                <th>Commissionparte</th>
+                <td>{{ transaction.commissionparte }}</td>
+            </tr>
+            <tr>
+                <th>Commissionetat</th>
+                <td>{{ transaction.commissionetat }}</td>
+            </tr>
+            <tr>
+                <th>Datedenvoie</th>
+                <td>{{ transaction.datedenvoie ? transaction.datedenvoie|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Dateretrait</th>
+                <td>{{ transaction.dateretrait ? transaction.dateretrait|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Typedoperation</th>
+                <td>{{ transaction.typedoperation }}</td>
+            </tr>
+            <tr>
+                <th>Numerotransacion</th>
+                <td>{{ transaction.numerotransacion }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('transaction_index') }}">back to list</a>
+
+    <a href="{{ path('transaction_edit', {'id': transaction.id}) }}">edit</a>
+
+    {{ include('transaction/_delete_form.html.twig') }}
+{% endblock %}

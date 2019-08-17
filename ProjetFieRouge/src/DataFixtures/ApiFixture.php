@@ -2,10 +2,11 @@
 
 namespace App\DataFixtures;
 
-use Symfony\Component\Security\Core\User\UserInterface;
 use App\Entity\User;
+use App\Entity\Compte;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ApiFixture extends Fixture
@@ -19,6 +20,11 @@ class ApiFixture extends Fixture
     public function load(ObjectManager $manager)
     {
 
+        $compte = new Compte();
+        $num = rand(1000000000, 9999999999);
+        $sn = "SN";
+        $number = $sn . $num;
+        $compte->setNumCompte($number);
         $user = new User();
         $user->setUsername('Kabirou');
         $mdp = "123456";
@@ -35,7 +41,7 @@ class ApiFixture extends Fixture
         $user->setUpdatedAt(new \DateTime('now'));
 
 
-
+        $user->setCompte(null);
         $manager->persist($user);
         $manager->flush();
     }

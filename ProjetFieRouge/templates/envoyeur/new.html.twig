@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Envoyeur{% endblock %}
+
+{% block body %}
+    <h1>Create new Envoyeur</h1>
+
+    {{ include('envoyeur/_form.html.twig') }}
+
+    <a href="{{ path('envoyeur_index') }}">back to list</a>
+{% endblock %}

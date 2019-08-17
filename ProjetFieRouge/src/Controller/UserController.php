@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Compte;
+use App\Entity\Envoyeur;
 use App\Entity\Profil;
 use App\Form\UserType;
 use App\Form\CompteType;
 use App\Entity\Partenaire;
+use App\Form\BeneficiaireType;
 use App\Form\PartenaireType;
 use App\Repository\UserRepository;
 use App\Repository\PartenaireRepository;
@@ -65,6 +67,10 @@ class UserController extends AbstractController
             $repos = $this->getDoctrine()->getRepository(Profil::class);
             $profils = $repos->find($values['profil']);
             $user->setProfil($profils);
+            //recuperer id du compte
+            $repos = $this->getDoctrine()->getRepository(Compte::class);
+            $compte = $repos->find($values['compte']);
+            $user->setCompte($compte);
 
             $role = [];
             if ($profils->getLibelle() == "ROLE_SUPER_ADMIN") {
@@ -181,7 +187,7 @@ class UserController extends AbstractController
         $form->submit($data);
         $utilisateur->setImageFile($files);
 
-        $utilisateur->setRoles(["ROLE_CAISSIER"]);
+        $utilisateur->setRoles(["ROLE_USER"]);
         $utilisateur->setPartenaire($partenaire);
         $utilisateur->setStatut("debloquer");
         $utilisateur->setPassword(
@@ -204,4 +210,6 @@ class UserController extends AbstractController
         $entityManager->flush();
         return new Response('Admin  ajouté  avec succès', Response::HTTP_CREATED);
     }
+
+   
 }

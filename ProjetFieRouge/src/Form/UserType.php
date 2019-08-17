@@ -13,6 +13,8 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use App\Entity\Compte;
+
 class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -38,7 +40,9 @@ class UserType extends AbstractType
             ->add('telephone')
             ->add('imageFile', VichImageType::class)
             ->add('partenaire',EntityType::class,['class'=>Partenaire::class])
-            ->add('profil', EntityType::class, ['class' => Profil::class]);
+            ->add('profil', EntityType::class, ['class' => Profil::class])
+            ->add('compte', EntityType::class, ['class' => Compte::class]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

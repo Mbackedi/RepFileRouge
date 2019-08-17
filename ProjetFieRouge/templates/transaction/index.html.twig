@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transaction index{% endblock %}
+
+{% block body %}
+    <h1>Transaction index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Caisier</th>
+                <th>Code</th>
+                <th>Montant</th>
+                <th>Frais</th>
+                <th>Total</th>
+                <th>Commissionsup</th>
+                <th>Commissionparte</th>
+                <th>Commissionetat</th>
+                <th>Datedenvoie</th>
+                <th>Dateretrait</th>
+                <th>Typedoperation</th>
+                <th>Numerotransacion</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.id }}</td>
+                <td>{{ transaction.caisier }}</td>
+                <td>{{ transaction.code }}</td>
+                <td>{{ transaction.montant }}</td>
+                <td>{{ transaction.frais }}</td>
+                <td>{{ transaction.total }}</td>
+                <td>{{ transaction.commissionsup }}</td>
+                <td>{{ transaction.commissionparte }}</td>
+                <td>{{ transaction.commissionetat }}</td>
+                <td>{{ transaction.datedenvoie ? transaction.datedenvoie|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ transaction.dateretrait ? transaction.dateretrait|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ transaction.typedoperation }}</td>
+                <td>{{ transaction.numerotransacion }}</td>
+                <td>
+                    <a href="{{ path('transaction_show', {'id': transaction.id}) }}">show</a>
+                    <a href="{{ path('transaction_edit', {'id': transaction.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="14">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('transaction_new') }}">Create new</a>
+{% endblock %}
