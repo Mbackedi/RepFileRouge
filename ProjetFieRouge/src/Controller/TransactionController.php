@@ -37,7 +37,8 @@ class TransactionController extends AbstractController
         $data = $request->request->all();
         $form->handleRequest($request);
         $form->submit($data);
-        if($form->isSubmitted() && $form-> isValid()){
+        if($form->isSubmitted()){
+
 
             //BENEFICIAIRE
             $beneficiaire = new Beneficiaire();
@@ -70,7 +71,9 @@ class TransactionController extends AbstractController
             $montant=$transaction->getMontant();
             //verifier montant dispo
             $comptes=$this->getUser()->getCompte();
-            
+
+            $comptes->getSolde();
+         
             if($transaction->getMontant()>= $comptes->getSolde()){
                 return $this->json([
                     'message1'=> 'Votre solde('.$comptes->getSolde().' ) ne vous permet pas 
@@ -87,17 +90,21 @@ class TransactionController extends AbstractController
                     $valeur=$values->getValeur();
                 }
             }
+
             $transaction->setFrais($valeur);
 
             $sup = ($valeur  * 40) / 100;
             $parte = ($valeur * 20) / 100;
             $etat = ($valeur * 30) / 100;
-
+           
+            
             $transaction->setCommissionsup($sup);
             $transaction->setCommissionparte($parte);
             $transaction->setCommissionetat($etat);
             $transaction->setNumerotransacion(rand(11111111,9999999));
             $total=$montant+$valeur;
+            $comptes->setSolde($comptes->getSolde() - $montant+$sup);
+    
             $transaction->setTotal($total);
 
             $entityManager = $this->getDoctrine()->getManager();

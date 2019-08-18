@@ -187,7 +187,7 @@ class UserController extends AbstractController
         $form->submit($data);
         $utilisateur->setImageFile($files);
 
-        $utilisateur->setRoles(["ROLE_USER"]);
+        $utilisateur->setRoles(["ROLE_CAISSIER"]);
         $utilisateur->setPartenaire($partenaire);
         $utilisateur->setStatut("debloquer");
         $utilisateur->setPassword(
