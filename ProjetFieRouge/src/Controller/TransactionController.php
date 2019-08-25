@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
+use Dompdf\Dompdf;
 use App\Entity\Tarif;
 use App\Entity\Envoyeur;
 use App\Form\EnvoyeurType;
 use App\Entity\Transaction;
 use App\Entity\Beneficiaire;
-use App\Form\BeneficiaireType;
 use App\Form\TransactionType;
+use App\Form\BeneficiaireType;
 use App\Form\DestinataireType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\TransactionRepository;
@@ -76,8 +77,7 @@ class TransactionController extends AbstractController
          
             if($transaction->getMontant()>= $comptes->getSolde()){
                 return $this->json([
-                    'message1'=> 'Votre solde('.$comptes->getSolde().' ) ne vous permet pas 
-                    d\'effectuer cette transaction'
+                    'message1'=> 'Votre solde('.$comptes->getSolde().' ) ne vous permet pas d\'effectuer cette transaction'
                 ]);
             }
 
@@ -126,6 +126,42 @@ class TransactionController extends AbstractController
         ];
         return new JsonResponse($data, 500);
     }
+
+
+
+    /**
+     * @Route("/document", name="document")
+     */
+
+     public function index(){
+        // Configurez Dompdf selon vos besoins
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        // Instancier Dompdf avec nos options
+        $dompdf = new Dompdf($pdfOptions);
+
+        // Récupère le code HTML généré dans notre fichier twig
+        $html = $this->renderView('transaction/index.html.twig', [
+            'title' => "Welcome to our PDF Test"
+        ]);
+
+        // Charger du HTML dans Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        //Exporter le PDF généré dans le navigateur (vue intégrée)
+        $dompdf->stream("testpdf.pdf", [
+            "Attachment" => false
+        ]);
+     }
+
+
 
     /**
      * @Route("/{id}", name="transaction_show", methods={"GET"})

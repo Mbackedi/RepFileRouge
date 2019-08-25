@@ -41,6 +41,22 @@ class PartenaireController extends AbstractController
         return new Response('Veuillez renseigner les champs ', Response::HTTP_CREATED);
     }
 
+
+    /**
+     * @Route("/listerpartenaire", name="list_phone", methods={"POST"})
+     */
+    public function listerpartenaire(PartenaireRepository $partenaireRepository, SerializerInterface $serializer)
+    {
+        $partenaire = $partenaireRepository->findAll();
+        $data = $serializer->serialize($partenaire, 'json');
+
+        return new Response($data, 200, [
+            'Content-Type' => 'application/json'
+        ]);
+    }
+
+
+
     /**
      * @Route("/{id}", name="partenaire_show", methods={"GET"})
      */
