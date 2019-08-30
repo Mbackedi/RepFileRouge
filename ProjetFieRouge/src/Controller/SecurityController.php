@@ -58,7 +58,7 @@ private $passwordEncoder;
             }
 
             $user->setRoles($role);
-            $user->setNomcomplet($values->$nomcomplet);
+            $user->setNomcomplet($values->nomcomplet);
             $user->setTelephone($values->telephone);
             $block = "debloquer";
             $user->setStatut($block);
@@ -135,6 +135,7 @@ private $passwordEncoder;
         }
 
         $token = $JWTEncoder->encode([
+            'roles' => $user->getRoles(),
             'username' => $user->getUsername(),
             'exp' => time() + 86400 // 1 day expiration
         ]);

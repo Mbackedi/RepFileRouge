@@ -21,7 +21,7 @@ class PartenaireController extends AbstractController
 
 
     /**
-     * @Route("/partenaire", name="partenaire_new", methods={"GET","POST"})
+     * @Route("/partenaire", name="partenaire_new", methods={"GET" ,"POST"})
      */
     public function new(Request $request, SerializerInterface $serializer, EntityManagerInterface $entityManager)
     {
@@ -43,7 +43,7 @@ class PartenaireController extends AbstractController
 
 
     /**
-     * @Route("/listerpartenaire", name="list_phone", methods={"POST"})
+     * @Route("/listerpartenaire/{id}", name="list_phone", methods={"GET"})
      */
     public function listerpartenaire(PartenaireRepository $partenaireRepository, SerializerInterface $serializer)
     {
