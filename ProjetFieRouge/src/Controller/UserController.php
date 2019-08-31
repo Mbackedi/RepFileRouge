@@ -54,7 +54,7 @@ class UserController extends AbstractController
         $form->submit($values);
         $files = $request->files->all()['imageName'];
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
@@ -67,23 +67,27 @@ class UserController extends AbstractController
             $repos = $this->getDoctrine()->getRepository(Profil::class);
             $profils = $repos->find($values['profil']);
             $user->setProfil($profils);
-            //recuperer id du compte
+          /*   //recuperer id du compte
             $repos = $this->getDoctrine()->getRepository(Compte::class);
             $compte = $repos->find($values['compte']);
-            $user->setCompte($compte);
+            $user->setCompte($compte); */
 
             $role = [];
-            if ($profils->getLibelle() == "ROLE_SUPER_ADMIN") {
+            if ($profils->getLibelle() == "SUPER_ADMIN") {
                 $role = (["ROLE_ADMIN"]);
-            } elseif ($profils->getLibelle() == "ROLE_ADMIN") {
+            } elseif ($profils->getLibelle() == "ADMIN") {
                 $role = (["ROLE_USER"]);
-            } elseif ($profils->getLibelle() == "ROLE_USER") {
+            } elseif ($profils->getLibelle() == "USER") {
+                $role = (["ROLE_USER"]);
+            } elseif ($profils->getLibelle() == "CAISSIER") {
                 $role = (["ROLE_CAISSIER"]);
-            } elseif ($profils->getLibelle() == "ROLE_CAISSIER") {
-                $role = (["ROLE_SUPER_ADMIN"]);
             }
             $user->setRoles($role);
             $user->setStatut("debloquer");
+
+            // recuperer l'id du partenaire
+            $users=$this->getUser()->getPartenaire();
+            $user->setPartenaire($users);
 
 
             $entityManager = $this->getDoctrine()->getManager();

@@ -5,12 +5,13 @@ namespace App\Controller;
 use App\Entity\Partenaire;
 use App\Form\PartenaireType;
 
+use App\Repository\ProfilRepository;
+use JMS\Serializer\SerializerInterface;
 use App\Repository\PartenaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use JMS\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -49,6 +50,21 @@ class PartenaireController extends AbstractController
     {
         $partenaire = $partenaireRepository->findAll();
         $data = $serializer->serialize($partenaire, 'json');
+
+        return new Response($data, 200, [
+            'Content-Type' => 'application/json'
+        ]);
+    }
+
+
+
+    /**
+     * @Route("/listerprofil/{id}", name="list_profil", methods={"GET"})
+     */
+    public function listerprofil(ProfilRepository $profilRepository, SerializerInterface $serializer)
+    {
+        $profil = $profilRepository->findAll();
+        $data = $serializer->serialize($profil, 'json');
 
         return new Response($data, 200, [
             'Content-Type' => 'application/json'
