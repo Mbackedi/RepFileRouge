@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Depot;
 use App\Form\DepotType;
 use App\Repository\DepotRepository;
+use App\Repository\CompteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\DateTimeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,7 +39,7 @@ class DepotController extends AbstractController
         $depot = new Depot();
         $form = $this->createForm(DepotType::class, $depot);
         $data = $request->request->all();
-        $depot->setDatedepot(new \DateTime());
+        $depot->setDatedepot(new \Datetime());
         //  var_dump( $depot->setDateDepot(new \DateTime())); die;
         $depot->getMontant();
 
@@ -45,7 +47,7 @@ class DepotController extends AbstractController
         if ($form->isSubmitted()) {
             $depot->getMontant();
 
-            if ($depot->getMontant() >= 75000) {
+           if ($depot->getMontant() >= 75000) {
                 $compte = $depot->getCompte();
                 $compte->setSolde($compte->getSolde() + $depot->getMontant());
                 $entityManager = $this->getDoctrine()->getManager();
@@ -62,6 +64,20 @@ class DepotController extends AbstractController
             'message' => 'Vous devez renseigner le montant et le compte où doit être effectuer le dépot '
         ];
         return new Response($data, 500);
+    }
+
+
+    /**
+     * @Route("/listercompte", name="list_compte", methods={"GET"})
+     */
+    public function listercompte(CompteRepository $compteRepository, SerializerInterface $serializer)
+    {
+        $compte = $compteRepository->findAll();
+        $data = $serializer->serialize($compte, 'json');
+
+        return new Response($data, 200, [
+            'Content-Type' => 'application/json'
+        ]);
     }
 
 

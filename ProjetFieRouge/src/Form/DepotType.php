@@ -13,7 +13,6 @@ class DepotType extends AbstractType
     {
         $builder
             ->add('montant')
-            ->add('datedepot')
             ->add('compte');
     }
 
